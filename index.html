@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>To Do List</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+</head>
+<body>
+  <div id="container" class="container">
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.24/browser.js"></script>
+  <script src="https://fb.me/react-with-addons-0.14.7.js"></script>
+  <script src="https://fb.me/react-dom-0.14.7.min.js"></script>
+  <script type="text/babel">
+    class Application extends React.Component {
+      constructor(props) {
+        super(props);
+        this.state = {
+          list: this.props.items
+        };
+
+        this.addNew = this.addNew.bind(this);
+      }
+
+      addNew(desc) {
+        let newItems = this.props.items;
+        newItems.push({done: false, desc: desc});
+        this.setState({list: newItems});
+
+      }
+
+      render() {
+        return (
+          <div>
+          <div className="row">
+            <div className="col-md-6">
+              <h1>To Do List</h1>
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-md-6">
+              <Input addNew={this.addNew}/>
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-md-6">
+              <List items={this.state.list} />
+            </div>
+          </div>
+          </div>
+        )
+      }
+    }
+
+    class Input extends React.Component {
+      constructor(props) {
+        super(props);
+
+        this.state = {
+          value: ''
+        };
+
+        this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleChange = this.handleChange.bind(this);
+      }
+
+      handleChange(e) {
+        this.setState({value: e.target.value});
+      }
+
+      handleSubmit() {
+        this.props.addNew(this.state.value);
+      }
+
+      render() {
+        return (
+          <div>
+            
+              <input type="text" className="form-control" onChange={this.handleChange} placeholder="New Item..." />
+              <button onClick={this.handleSubmit} className="btn btn-default">Add New</button>
+
+          </div>
+        )
+      }
+    }
+
+    class List extends React.Component {
+      render() {
+        let items = [];
+        console.log(this.props.items);
+        this.props.items.forEach((item) => {
+          console.log(item);
+          items.push(<ListItem key={item.desc} desc={item.desc} />);
+        })
+
+        return (
+          <table className="table table-striped">
+          <tbody>
+            {items}
+            </tbody>
+          </table>
+        )
+      }
+    }
+
+    class ListItem extends React.Component {
+      render() {
+        return (
+          <tr>
+            <td><input type="checkbox" /></td>
+            <td>{this.props.desc}</td>
+          </tr>
+        )
+      }
+    }
+
+    var items = [{done: false, desc: "Practice"}];
+
+    ReactDOM.render(<Application items={items} />, document.getElementById('container'));
+  </script>
+</body>
+</html>
