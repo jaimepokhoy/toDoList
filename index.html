@@ -63,6 +63,13 @@
 
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this.handleKey = this.handleKey.bind(this);
+      }
+
+      handleKey(e) {
+        if (e.which === 13) {
+          this.props.addNew(this.state.value);
+        }
       }
 
       handleChange(e) {
@@ -76,10 +83,8 @@
       render() {
         return (
           <div>
-            
-              <input type="text" className="form-control" onChange={this.handleChange} placeholder="New Item..." />
-              <button onClick={this.handleSubmit} className="btn btn-default">Add New</button>
 
+              <input type="text" className="form-control" onKeyDown={this.handleKey} onChange={this.handleChange} placeholder="New Item..." />
           </div>
         )
       }
